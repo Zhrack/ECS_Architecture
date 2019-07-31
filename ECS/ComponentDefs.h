@@ -6,7 +6,7 @@
 
 #include "BaseComponent.h"
 
-using EntityID = unsigned long;
+using EntityID = std::uint64_t;
 
 using BaseComponentPtr = std::unique_ptr<BaseComponent>;
 
