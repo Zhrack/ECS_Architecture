@@ -3,16 +3,22 @@
 
 #include "TransformComponent.h"
 #include "VelocityComponent.h"
+#include "RenderComponent.h"
+#include "PlayerInputComponent.h"
 
 struct Components
 {
-    Transforms mTransforms;
-    Velocities mVelocities;
+    Transforms              mTransforms;
+    Velocities              mVelocities;
+    Renderables             mRenderables;
+    PlayerControllable      mPlayerControllable;
 
 
     Components(int numEntities) :
-        mTransforms(numEntities, nullptr),
-        mVelocities(numEntities, nullptr)
+        mTransforms(numEntities),
+        mVelocities(numEntities),
+        mRenderables(numEntities),
+        mPlayerControllable(numEntities)
     {}
 
     Components() = delete;

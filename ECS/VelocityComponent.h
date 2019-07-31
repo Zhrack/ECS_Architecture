@@ -3,10 +3,18 @@
 
 #include "ComponentDefs.h"
 
-class VelocityComponent
+#include <SFML/Graphics.hpp>
+
+/// <summary>
+/// The velocity vector.
+/// </summary>
+struct VelocityComponent
 {
-public:
+    sf::Vector2f    mVel;
+
     VelocityComponent();
+    VelocityComponent(sf::Vector2f vec);
+
     ~VelocityComponent();
 };
 

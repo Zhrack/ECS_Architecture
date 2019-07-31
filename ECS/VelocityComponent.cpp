@@ -2,7 +2,13 @@
 #include "VelocityComponent.h"
 
 
-VelocityComponent::VelocityComponent()
+VelocityComponent::VelocityComponent() :
+    mVel()
+{
+}
+
+VelocityComponent::VelocityComponent(sf::Vector2f vec) :
+    mVel(vec)
 {
 }
 

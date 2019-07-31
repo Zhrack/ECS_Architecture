@@ -4,12 +4,9 @@
 
 EntityManager::EntityManager(int entityPool):
     mComponents(entityPool),
-    mEntityIDPool()
+    mEntityIDPool(entityPool)
 {
-    for (int i = entityPool - 1; i >= 0; i--)
-    {
-        mEntityIDPool.push(i);
-    }
+
 }
 
 

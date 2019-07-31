@@ -3,9 +3,14 @@
 
 #include "ComponentDefs.h"
 
-class TransformComponent
+#include <SFML/Graphics.hpp>
+
+/// <summary>
+/// Encapsulates a sf::Transform, a position, rotation and scale matrix.
+/// </summary>
+/// <seealso cref="sf::Transformable" />
+struct TransformComponent : public sf::Transformable
 {
-public:
     TransformComponent();
     ~TransformComponent();
 };

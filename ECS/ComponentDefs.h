@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+using EntityID = unsigned long;
+
 template<typename T>
 using Component = std::vector<std::unique_ptr<T>>;
 

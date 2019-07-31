@@ -5,7 +5,8 @@
 
 #include "Components.h"
 
-using EntityID = unsigned long;
+#include "EntityIDPool.h"
+
 
 class EntityManager
 {
@@ -14,9 +15,9 @@ public:
     ~EntityManager();
 
 private:
-    Components              mComponents;
+    Components      mComponents;
 
-    std::stack<EntityID>    mEntityIDPool;
+    EntityIDPool    mEntityIDPool;
 };
 
 
