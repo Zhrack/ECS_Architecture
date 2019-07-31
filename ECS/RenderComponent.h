@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "ComponentDefs.h"
+
 /// <summary>
 /// Encapsulates a sf::Sprite.
 /// </summary>

@@ -1,6 +1,8 @@
 #ifndef PLAYER_INPUT_COMPONENT_H_
 #define PLAYER_INPUT_COMPONENT_H_
 
+#include "ComponentDefs.h"
+
 /// <summary>
 /// An empty component that tags entities under player control.
 /// </summary>
