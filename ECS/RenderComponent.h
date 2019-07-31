@@ -4,18 +4,17 @@
 #include <SFML/Graphics.hpp>
 
 #include "ComponentDefs.h"
+#include "BaseComponent.h"
 
 /// <summary>
 /// Encapsulates a sf::Sprite.
 /// </summary>
-struct RenderComponent
+struct RenderComponent : public BaseComponent
 {
     sf::Sprite  mSprite;
 
     RenderComponent();
     ~RenderComponent();
 };
-
-using Renderables = Component<RenderComponent>;
 
 #endif // !RENDER_COMPONENT_H_

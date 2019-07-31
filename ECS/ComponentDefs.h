@@ -4,9 +4,22 @@
 #include <vector>
 #include <memory>
 
+#include "BaseComponent.h"
+
 using EntityID = unsigned long;
 
-template<typename T>
-using Component = std::vector<std::unique_ptr<T>>;
+using BaseComponentPtr = std::unique_ptr<BaseComponent>;
+
+using ComponentList = std::vector<BaseComponentPtr>;
+
+enum CompType
+{
+    COMP_TRANSFORM = 0,
+    COMP_VELOCITY,
+    COMP_RENDER,
+    COMP_PLAYER_INPUT,
+
+    COMP_COUNT // keep last
+};
 
 #endif // !COMPONENT_DEFS_H_

@@ -8,7 +8,7 @@
 class EntityIDPool
 {
 public:
-    EntityIDPool(int entityPool);
+    EntityIDPool(unsigned long entityPool);
     ~EntityIDPool();
 
     EntityIDPool() = delete;
@@ -17,8 +17,11 @@ public:
 
     void freeID(EntityID id);
 
+    EntityID currentMax() const;
+
 private:
     std::stack<EntityID>    mEntityIDPool;
+    EntityID                mCurrentMax;
 };
 
 

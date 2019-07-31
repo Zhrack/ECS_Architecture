@@ -2,10 +2,12 @@
 #include "EntityIDPool.h"
 
 
-EntityIDPool::EntityIDPool(int entityPool)
+EntityIDPool::EntityIDPool(unsigned long entityPool) :
+    mEntityIDPool(),
+    mCurrentMax(0)
 {
     // insert it backwards so that when popping values, they come in ascending order
-    for (int i = entityPool - 1; i >= 0; i--)
+    for (unsigned long i = entityPool - 1; i >= 0; i--)
     {
         mEntityIDPool.push(i);
     }
@@ -20,10 +22,16 @@ EntityID EntityIDPool::generateID()
 {
     auto id = mEntityIDPool.top();
     mEntityIDPool.pop();
+    mCurrentMax++;
     return id;
 }
 
 void EntityIDPool::freeID(EntityID id)
 {
     mEntityIDPool.push(id);
+}
+
+EntityID EntityIDPool::currentMax() const
+{
+    return mCurrentMax;
 }

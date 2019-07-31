@@ -2,22 +2,21 @@
 #define VELOCITY_COMPONENT_H_
 
 #include "ComponentDefs.h"
+#include "BaseComponent.h"
 
 #include <SFML/Graphics.hpp>
 
 /// <summary>
 /// The velocity vector.
 /// </summary>
-struct VelocityComponent
+struct VelocityComponent : public BaseComponent
 {
     sf::Vector2f    mVel;
 
     VelocityComponent();
     VelocityComponent(sf::Vector2f vec);
 
-    ~VelocityComponent();
+    virtual ~VelocityComponent();
 };
-
-using Velocities = Component<VelocityComponent>;
 
 #endif

@@ -16,6 +16,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{b6ec3dc4-82b7-4c73-bbae-f7a3e69b07d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Processors">
+      <UniqueIdentifier>{e35730ae-ee86-4127-9b2f-d1318eed4f4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -39,11 +42,17 @@
     <ClInclude Include="PlayerInputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentDefs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProcessor.h">
+      <Filter>Processors</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseProcessor.h">
+      <Filter>Processors</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcessor.cpp">
+      <Filter>Processors</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseProcessor.cpp">
+      <Filter>Processors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
