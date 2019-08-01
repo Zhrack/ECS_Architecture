@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RenderProcessor.h"
 
+#include "EntityManager.h"
 #include "TransformComponent.h"
 #include "RenderComponent.h"
 
@@ -12,7 +13,7 @@ RenderProcessor::RenderProcessor(EntityManager* manager, sf::RenderWindow* win) 
         }),
     mWindow(win)
 {
-    auto a = mEntityMngr->intersection(const_cast<std::vector<CompType>&>(mDependenciesComps));
+    auto a = mEntityMngr->intersection(const_cast<std::vector<CompType>&>(mWantedTypes));
     updateIntersection(a);
 }
 
@@ -25,10 +26,10 @@ void RenderProcessor::update(float elapsed)
 {
     mWindow->clear();
 
-    for (auto e : mCurrentEntities)
+    for (auto& e : mCurrentDeps)
     {
-        auto transform = mEntityMngr->getComponent<TransformComponent>(CompType::COMP_TRANSFORM, e);
-        auto render = mEntityMngr->getComponent<RenderComponent>(CompType::COMP_RENDER, e);
+        auto transform = e.getAs<TransformComponent>(CompType::COMP_TRANSFORM);
+        auto render = e.getAs<RenderComponent>(CompType::COMP_RENDER);
 
         // update sprite transform
         render->mSprite.setPosition(transform->getPosition());

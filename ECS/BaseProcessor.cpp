@@ -3,8 +3,8 @@
 
 
 BaseProcessor::BaseProcessor(EntityManager* manager, const std::vector<CompType>& deps) :
-    mDependenciesComps(deps),
-    mCurrentEntities(),
+    mWantedTypes(deps),
+    mCurrentDeps(),
     mEntityMngr(manager)
 {
 }
@@ -14,7 +14,7 @@ BaseProcessor::~BaseProcessor()
 {
 }
 
-void BaseProcessor::updateIntersection(std::vector<EntityID>& newEntities)
+void BaseProcessor::updateIntersection(std::vector<Dependency>& newEntities)
 {
-    mCurrentEntities.swap(newEntities);
+    mCurrentDeps.swap(newEntities);
 }

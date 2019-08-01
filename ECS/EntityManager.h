@@ -5,17 +5,18 @@
 
 #include "EntityIDPool.h"
 
+#include "RenderProcessor.h"
+
+#include <SFML/Graphics.hpp>
+
 
 class EntityManager
 {
 public:
-    EntityManager(unsigned long entityPool);
+    EntityManager(unsigned long entityPool, sf::RenderWindow* win);
     ~EntityManager();
 
-    std::vector<EntityID> intersection(const std::vector<CompType>& deps);
-
-    template<class T>
-    T* getComponent(CompType type, EntityID id);
+    std::vector<Dependency> intersection(const std::vector<CompType>& deps);
 
 private:
     std::vector<ComponentList>  mComponents;
@@ -23,15 +24,13 @@ private:
     EntityIDPool                mEntityIDPool;
 
     unsigned long               mMaxEntities;
+
+    sf::RenderWindow*           mRenderWindow;
+
+    // Processors
+    RenderProcessor             mRenderProcessor;
+
 };
 
 
 #endif // !ENTITY_MANAGER_H_
-
-template<class T>
-inline T * EntityManager::getComponent(CompType type, EntityID id)
-{
-    static_assert(std::is_base_of<BaseComponent, T>::value, "T must derive from BaseComponent");
-
-    return static_cast<T*>(mComponents[type][id].get());
-}

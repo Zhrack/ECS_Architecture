@@ -2,10 +2,12 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(unsigned long entityPool):
+EntityManager::EntityManager(unsigned long entityPool, sf::RenderWindow* win):
     mComponents(CompType::COMP_COUNT),
     mEntityIDPool(entityPool),
-    mMaxEntities(entityPool)
+    mMaxEntities(entityPool),
+    mRenderProcessor(this, win),
+    mRenderWindow(win)
 {
     // register types
     for (size_t i = 0; i < CompType::COMP_COUNT; ++i)
@@ -19,28 +21,35 @@ EntityManager::~EntityManager()
 {
 }
 
-std::vector<EntityID> EntityManager::intersection(const std::vector<CompType>& deps)
+std::vector<Dependency> EntityManager::intersection(const std::vector<CompType>& deps)
 {
-    std::vector<EntityID> result;
+    std::vector<Dependency> result;
     std::uint32_t counter = 0;
     auto depsSize = deps.size();
 
     // simple implementation for now, also deps size will be < 10 most of the time, pratically O(n)
-    for (EntityID id = 0; id < mMaxEntities; id++)
+    ;
+
+    for (auto entIDIter = mEntityIDPool.getUsedIDsIter();
+        entIDIter != mEntityIDPool.endUsedIDsIter();
+        entIDIter++)
     {
+        std::unordered_map<CompType, BaseComponent*> comps;
         counter = 0;
 
         for (size_t i = 0; i < CompType::COMP_COUNT; ++i)
         {
-            if (mComponents[deps[i]][id] != nullptr)
+            auto& c = mComponents[deps[i]][*entIDIter];
+            if (c != nullptr)
             {
+                comps[(CompType)i] = c.get();
                 counter++;
             }
         }
 
         if (counter == depsSize)
         {
-            result.push_back(id);
+            result.emplace_back(*entIDIter, comps);
         }
     }
 
