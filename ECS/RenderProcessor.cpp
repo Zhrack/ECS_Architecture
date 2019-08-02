@@ -2,8 +2,7 @@
 #include "RenderProcessor.h"
 
 #include "EntityManager.h"
-#include "TransformComponent.h"
-#include "RenderComponent.h"
+#include "Components.h"
 
 
 RenderProcessor::RenderProcessor(EntityManager* manager, sf::RenderWindow* win) :
