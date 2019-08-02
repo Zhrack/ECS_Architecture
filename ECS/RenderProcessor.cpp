@@ -31,12 +31,12 @@ void RenderProcessor::update(float elapsed)
         auto render = e.getAs<RenderComponent>(CompType::COMP_RENDER);
 
         // update sprite transform
-        render->mSprite.setPosition(transform->getPosition());
-        render->mSprite.setRotation(transform->getRotation());
-        render->mSprite.setScale(transform->getScale());
+        render->setPosition(transform->getPosition());
+        render->setRotation(transform->getRotation());
+        render->setScale(transform->getScale());
 
         // render it
-        mWindow->draw(render->mSprite);
+        mWindow->draw(*render);
     }
 
     mWindow->display();

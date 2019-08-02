@@ -50,13 +50,21 @@ private:
 /// <summary>
 /// Encapsulates a sf::Sprite.
 /// </summary>
-struct RenderComponent : public BaseComponent
+struct RenderComponent : public BaseComponent, sf::Drawable
 {
-
     RenderComponent() {}
     virtual ~RenderComponent() {}
 
     // TODO expose sf::Sprite methods as needed
+    void setPosition(const sf::Vector2f& pos);
+    void setRotation(float angle);
+    void setScale(const sf::Vector2f& factors);
+
+    sf::Vector2f    getPosition();
+    float           getRotation();
+    sf::Vector2f    getScale();
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
     sf::Sprite  mSprite;
