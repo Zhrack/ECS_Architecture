@@ -67,27 +67,64 @@ void BaseProcessor::onRemoveComponent(const Event & event)
 {
     const auto& data = event.removeCompData;
 
-    // check if the new component was wanted
+    // check if the component was wanted
     auto iter = std::find(mWantedTypes.begin(), mWantedTypes.end(), data.type);
     if (iter == mWantedTypes.end()) return;
 
     // check if the entity is present
-    auto iter2 = std::find(mCurrentDeps.begin(), mCurrentDeps.end(), [this, &data](Dependency& dep) {
-        return dep.mID == data.id;
-    });
-    if (iter2 == mCurrentDeps.end()) return;
-
-    // TODO remove from currentDeps
+    for (auto it = mCurrentDeps.begin(); it != mCurrentDeps.end(); it++)
+    {
+        if (it->mID == data.id)
+        {
+            std::iter_swap(it, mCurrentDeps.end());
+            mCurrentDeps.pop_back();
+            return;
+        }
+    }
 }
 
 void BaseProcessor::onNewEntity(const Event & event)
 {
     const auto& data = event.newEntityData;
+
+    if (data.comps.size() < mWantedTypes.size()) return;
+
+    size_t counter = 0;
+    std::unordered_map<CompType, BaseComponent*> comps;
+    for (auto& e : data.comps)
+    {
+        for (auto it = mWantedTypes.begin(); it != mWantedTypes.end(); it++)
+        {
+            if (e.first == *it)
+            {
+                comps[e.first] = e.second;
+                counter++;
+            }
+        }
+    }
+
+    if (counter == mWantedTypes.size())
+    {
+        // entity is ok
+
+        mCurrentDeps.emplace_back(data.id, comps);
+    }
 }
 
 void BaseProcessor::onRemoveEntity(const Event & event)
 {
     const auto& data = event.removeEntityData;
+
+    // check if the entity is present
+    for (auto it = mCurrentDeps.begin(); it != mCurrentDeps.end(); it++)
+    {
+        if (it->mID == data.id)
+        {
+            std::iter_swap(it, mCurrentDeps.end());
+            mCurrentDeps.pop_back();
+            return;
+        }
+    }
 }
 
 void BaseProcessor::onNotify(const Event & event)
