@@ -4,6 +4,8 @@
 #include "EntityManager.h"
 #include "Components.h"
 
+#include "Events.h"
+
 
 RenderProcessor::RenderProcessor(EntityManager* manager, sf::RenderWindow* win) :
     BaseProcessor(manager, {
@@ -44,12 +46,9 @@ void RenderProcessor::update(float elapsed)
 
 void RenderProcessor::onNotify(const Event & event)
 {
-    auto id = event.mID;
+    // first check standard events
+    BaseProcessor::onNotify(event);
 
-    switch (id)
-    {
-    case EVENT_COUNT:
-    default:
-        break;
-    }
+    // not check the rest
+
 }

@@ -21,7 +21,13 @@ public:
     void updateProcessor(float elapsed);
 
 protected:
-    virtual void update(float elapsed) {}
+    virtual void update(float elapsed) = 0;
+
+    // event callbacks
+    void onNewComponent(const Event& event);
+    void onRemoveComponent(const Event& event);
+    void onNewEntity(const Event& event);
+    void onRemoveEntity(const Event& event);
 
 protected:
     /// <summary>
@@ -34,7 +40,7 @@ protected:
 
 
     // Inherited via Observer
-    virtual void onNotify(const Event & event) override {}
+    virtual void onNotify(const Event & event) override;
 
 };
 
