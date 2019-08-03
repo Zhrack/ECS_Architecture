@@ -15,6 +15,10 @@ public:
     virtual void update(float elapsed) override;
 
 private:
+    // Inherited via BaseProcessor
+    virtual void onNotify(const Event & event) override;
+
+private:
     sf::RenderWindow* mWindow;
 };
 

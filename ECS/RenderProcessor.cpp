@@ -41,3 +41,15 @@ void RenderProcessor::update(float elapsed)
 
     mWindow->display();
 }
+
+void RenderProcessor::onNotify(const Event & event)
+{
+    auto id = event.mID;
+
+    switch (id)
+    {
+    case EVENT_COUNT:
+    default:
+        break;
+    }
+}

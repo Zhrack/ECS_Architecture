@@ -5,8 +5,10 @@
 #include <iostream>
 
 #include "EntityIDPool.h"
+#include "Events.h"
 
-#include "RenderProcessor.h"
+#include "Components.h"
+#include "BaseProcessor.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -21,13 +23,11 @@ public:
 
     std::vector<Dependency> intersection(const std::vector<CompType>& deps);
 
-    EntityID createEntity();
     EntityID createEntity(const std::vector<CompType>& deps);
 
     void removeEntity(EntityID id);
 
-    template<class T>
-    void addComponent(CompType type, EntityID id);
+    BaseComponent* addComponent(CompType type, EntityID id, bool notify = true);
 
     void removeComponent(CompType type, EntityID id);
 
@@ -39,41 +39,31 @@ public:
     /// </summary>
     /// <param name="id">The identifier.</param>
     /// <returns></returns>
-    std::vector<std::pair<CompType, BaseComponent*>> getComponents(EntityID id);
+    EntityComponentList getComponents(EntityID id);
+
+    void notifyProcessors(const Event& ev);
 
 private:
-    std::vector<ComponentList>  mComponents;
+    EntityID createEntity();
 
-    EntityIDPool                mEntityIDPool;
+    template<class ...Args>
+    BaseComponent* getFromType(CompType type, Args... args);
 
-    unsigned long               mMaxEntities;
+private:
+    std::vector<ComponentList>      mComponents;
 
-    sf::RenderWindow*           mRenderWindow;
+    EntityIDPool                    mEntityIDPool;
+
+    unsigned long                   mMaxEntities;
+
+    sf::RenderWindow*               mRenderWindow;
 
     // Processors
-    RenderProcessor             mRenderProcessor;
-
+    std::vector<BaseProcessorPtr>   mProcessors;
 };
 
 
 #endif // !ENTITY_MANAGER_H_
-
-template<class T>
-inline void EntityManager::addComponent(CompType type, EntityID id)
-{
-    if (mComponents[type][id] != nullptr)
-    {
-        std::cout << "Component already present!" << std::endl;
-        return;
-    }
-
-    static_assert(std::is_base_of<BaseComponent, T>::value, "T must derive from BaseComponent");
-
-    mComponents[type][id].reset(new T());
-
-    // TODO notify processors of new component
-
-}
 
 template<class T>
 inline T * EntityManager::getComponent(CompType type, EntityID id)
@@ -82,4 +72,31 @@ inline T * EntityManager::getComponent(CompType type, EntityID id)
 
 
     return static_cast<T*>(mComponents[type][id].get());
+}
+
+template<class ...Args>
+inline BaseComponent * EntityManager::getFromType(CompType type, Args... args)
+{
+    BaseComponent* comp = nullptr;
+
+    switch (type)
+    {
+    case COMP_TRANSFORM:
+        comp = new TransformComponent(args...);
+        break;
+    case COMP_VELOCITY:
+        comp = new VelocityComponent(args...);
+        break;
+    case COMP_RENDER:
+        comp = new RenderComponent(args...);
+        break;
+    case COMP_PLAYER_INPUT:
+        comp = new PlayerInputComponent(args...);
+        break;
+    case COMP_COUNT:
+    default:
+        break;
+    }
+
+    return comp;
 }

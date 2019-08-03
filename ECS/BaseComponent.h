@@ -2,8 +2,9 @@
 #define BASE_COMPONENT_H_
 
 #include <mutex>
+#include "Observable.h"
 
-struct BaseComponent
+struct BaseComponent : public Observable
 {
     BaseComponent() {}
     virtual ~BaseComponent() {}

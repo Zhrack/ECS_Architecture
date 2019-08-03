@@ -3,12 +3,13 @@
 
 #include <cassert>
 
+#include "RenderProcessor.h"
+
 
 EntityManager::EntityManager(unsigned long entityPool, sf::RenderWindow* win):
     mComponents(CompType::COMP_COUNT),
     mEntityIDPool(entityPool),
     mMaxEntities(entityPool),
-    mRenderProcessor(this, win),
     mRenderWindow(win)
 {
     // register types
@@ -16,6 +17,9 @@ EntityManager::EntityManager(unsigned long entityPool, sf::RenderWindow* win):
     {
         mComponents[i].resize(entityPool);
     }
+
+    // initialize processors
+    mProcessors.emplace_back(new RenderProcessor(this, mRenderWindow));
 }
 
 
@@ -25,7 +29,10 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(float elapsed)
 {
-    mRenderProcessor.update(elapsed);
+    for (auto it = mProcessors.begin(); it != mProcessors.end(); it++)
+    {
+        (*it)->updateProcessor(elapsed);
+    }
 }
 
 std::vector<Dependency> EntityManager::intersection(const std::vector<CompType>& deps)
@@ -63,18 +70,27 @@ std::vector<Dependency> EntityManager::intersection(const std::vector<CompType>&
 
 EntityID EntityManager::createEntity()
 {
-    auto id = mEntityIDPool.generateID();
-
-    // TODO notify processors
-
-    return id;
+    return mEntityIDPool.generateID();
 }
 
 EntityID EntityManager::createEntity(const std::vector<CompType>& deps)
 {
     auto id = createEntity();
 
-    // TODO add components and notify processors of new components
+    EntityComponentList comps;
+
+    for (auto dep : deps)
+    {
+        auto comp = addComponent(dep, id, false);
+        comps.emplace_back(dep, comp);
+    }
+
+    Event e;
+    e.mID = EventID::EVENT_NEW_ENTITY;
+    e.newEntityData.id = id;
+    e.newEntityData.comps.swap(comps);
+
+    notifyProcessors(e);
 
     return id;
 }
@@ -84,6 +100,35 @@ void EntityManager::removeEntity(EntityID id)
     mEntityIDPool.freeID(id);
 
     // TODO notify processors
+    Event e;
+    e.mID = EventID::EVENT_REMOVE_ENTITY;
+    e.removeEntityData.id = id;
+
+    notifyProcessors(e);
+}
+
+BaseComponent* EntityManager::addComponent(CompType type, EntityID id, bool notify)
+{
+    if (mComponents[type][id] != nullptr)
+    {
+        std::cout << "Component already present!" << std::endl;
+        return mComponents[type][id].get();
+    }
+
+    mComponents[type][id].reset(getFromType(type));
+
+    if (!notify) return mComponents[type][id].get();
+
+    // notify processors of new component
+    Event e;
+    e.mID = EventID::EVENT_NEW_COMPONENT;
+    e.newCompData.id = id;
+    e.newCompData.type = type;
+    e.newCompData.comp = mComponents[type][id].get();
+
+    notifyProcessors(e);
+
+    return mComponents[type][id].get();
 }
 
 void EntityManager::removeComponent(CompType type, EntityID id)
@@ -96,13 +141,18 @@ void EntityManager::removeComponent(CompType type, EntityID id)
 
     mComponents[type][id].reset(nullptr);
 
-    // TODO notify processors of component
+    // notify processors of new component
+    Event e;
+    e.mID = EventID::EVENT_REMOVE_COMPONENT;
+    e.removeCompData.id = id;
+    e.removeCompData.type = type;
 
+    notifyProcessors(e);
 }
 
-std::vector<std::pair<CompType, BaseComponent*>> EntityManager::getComponents(EntityID id)
+EntityComponentList EntityManager::getComponents(EntityID id)
 {
-    std::vector<std::pair<CompType, BaseComponent*>> result;
+    EntityComponentList result;
 
     for (int t = 0; t < CompType::COMP_COUNT; ++t)
     {
@@ -111,6 +161,14 @@ std::vector<std::pair<CompType, BaseComponent*>> EntityManager::getComponents(En
     }
 
     return result;
+}
+
+void EntityManager::notifyProcessors(const Event & ev)
+{
+    for (auto& p : mProcessors)
+    {
+        p->pushEvent(ev);
+    }
 }
 
 

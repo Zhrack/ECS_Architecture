@@ -18,3 +18,10 @@ void BaseProcessor::updateIntersection(std::vector<Dependency>& newEntities)
 {
     mCurrentDeps.swap(newEntities);
 }
+
+void BaseProcessor::updateProcessor(float elapsed)
+{
+    Observer::update();
+
+    update(elapsed);
+}
