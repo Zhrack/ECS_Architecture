@@ -8,6 +8,8 @@ BaseProcessor::BaseProcessor(EntityManager* manager, const std::vector<CompType>
     mCurrentDeps(),
     mEntityMngr(manager)
 {
+    auto a = mEntityMngr->intersection(const_cast<std::vector<CompType>&>(mWantedTypes));
+    updateIntersection(a);
 }
 
 

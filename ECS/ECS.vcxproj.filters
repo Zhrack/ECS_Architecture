@@ -19,6 +19,9 @@
     <Filter Include="Processors">
       <UniqueIdentifier>{e35730ae-ee86-4127-9b2f-d1318eed4f4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{0617b024-9669-4d7e-a7bb-716ffde742c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -57,6 +60,57 @@
     <ClInclude Include="Dependency.h">
       <Filter>Processors</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInputProcessor.h">
+      <Filter>Processors</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureService.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureIDs.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PCTextureService.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PCAudioService.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="NullTextureService.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="NullAudio.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioService.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioPCName.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -86,5 +140,52 @@
     <ClCompile Include="Observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerInputProcessor.cpp">
+      <Filter>Processors</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioService.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="NullAudio.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="NullTextureService.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PCAudioService.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PCTextureService.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureService.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\settings.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -14,8 +14,6 @@ RenderProcessor::RenderProcessor(EntityManager* manager, sf::RenderWindow* win) 
         }),
     mWindow(win)
 {
-    auto a = mEntityMngr->intersection(const_cast<std::vector<CompType>&>(mWantedTypes));
-    updateIntersection(a);
 }
 
 
