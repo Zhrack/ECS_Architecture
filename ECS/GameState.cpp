@@ -202,58 +202,55 @@ void GameState::update()
     }
     // render step
     renderGame(mTimeLag / mMSPerUpdate);
-
-    // do some cleanup
-    cleanupZombies();
 }
 
 
 void GameState::updateGame(float elapsed)
 {
-    // update
-    mPaddleBehaviorComp->updateComponent(elapsed);
-    auto balls = getComponentList(CompType::BALL_BEHAVIOR);
-    for (auto e : balls)
-    {
-        if (!e->isZombie())
-        {
-            e->updateComponent(elapsed);
-        }
-    }
-    auto powerups = getComponentList(CompType::STICKY);
-    auto disruptionList = getComponentList(CompType::DISRUPTION);
-    auto bomberList = getComponentList(CompType::BOMBER);
-    powerups.insert(powerups.end(), disruptionList.begin(), disruptionList.end());
-    powerups.insert(powerups.end(), bomberList.begin(), bomberList.end());
-    // append other power ups here...
-    for (auto e : powerups)
-    {
-        if (!e->isZombie())
-        {
-            e->updateComponent(elapsed);
-        }
-    }
-    // late update for collision detection and other "physics" stuff
+    //// update
+    //mPaddleBehaviorComp->updateComponent(elapsed);
+    //auto balls = getComponentList(CompType::BALL_BEHAVIOR);
+    //for (auto e : balls)
+    //{
+    //    if (!e->isZombie())
+    //    {
+    //        e->updateComponent(elapsed);
+    //    }
+    //}
+    //auto powerups = getComponentList(CompType::STICKY);
+    //auto disruptionList = getComponentList(CompType::DISRUPTION);
+    //auto bomberList = getComponentList(CompType::BOMBER);
+    //powerups.insert(powerups.end(), disruptionList.begin(), disruptionList.end());
+    //powerups.insert(powerups.end(), bomberList.begin(), bomberList.end());
+    //// append other power ups here...
+    //for (auto e : powerups)
+    //{
+    //    if (!e->isZombie())
+    //    {
+    //        e->updateComponent(elapsed);
+    //    }
+    //}
+    //// late update for collision detection and other "physics" stuff
 
-    // make copies of colliders
-    auto colliders = getComponentList(CompType::BOX_COLLIDER);
-    auto circleColliders = getComponentList(CompType::CIRCLE_COLLIDER);
-    colliders.insert(colliders.end(), circleColliders.begin(), circleColliders.end());
+    //// make copies of colliders
+    //auto colliders = getComponentList(CompType::BOX_COLLIDER);
+    //auto circleColliders = getComponentList(CompType::CIRCLE_COLLIDER);
+    //colliders.insert(colliders.end(), circleColliders.begin(), circleColliders.end());
 
-    mCollisionDetector.checkCollisions(colliders);
+    //mCollisionDetector.checkCollisions(colliders);
 
-    auto watchers = getComponentList(CompType::GAME_OVER_WATCHER);
-    for (auto e : watchers)
-    {
-        if (!e->isZombie())
-        {
-            e->updateComponent(elapsed);
-        }
-    }
+    //auto watchers = getComponentList(CompType::GAME_OVER_WATCHER);
+    //for (auto e : watchers)
+    //{
+    //    if (!e->isZombie())
+    //    {
+    //        e->updateComponent(elapsed);
+    //    }
+    //}
 
-    mHighScoreNumberText.setString(std::to_string(mHighScore));
-    mCurrentScoreNumberText.setString(std::to_string(mCurrentScore));
-    mRemainingLivesNumberText.setString(std::to_string(mRemainingLives));
+    //mHighScoreNumberText.setString(std::to_string(mHighScore));
+    //mCurrentScoreNumberText.setString(std::to_string(mCurrentScore));
+    //mRemainingLivesNumberText.setString(std::to_string(mRemainingLives));
 }
 
 void GameState::renderGame(float elapsed)
@@ -263,38 +260,38 @@ void GameState::renderGame(float elapsed)
     mWindow->draw(mWalls);
 
     // call all renderComponents
-    auto renderVector = getComponentList(CompType::RECT_RENDER);
-    auto circleRenderVector = getComponentList(CompType::CIRCLE_RENDER);
-    auto spriteRenderVector = getComponentList(CompType::SPRITE_RENDER);
+    //auto renderVector = getComponentList(CompType::RECT_RENDER);
+    //auto circleRenderVector = getComponentList(CompType::CIRCLE_RENDER);
+    //auto spriteRenderVector = getComponentList(CompType::SPRITE_RENDER);
 
 
     // here if needed, sorting of rendererComponents could be made
-    renderVector.insert(renderVector.end(), circleRenderVector.begin(), circleRenderVector.end());
-    renderVector.insert(renderVector.end(), spriteRenderVector.begin(), spriteRenderVector.end());
+    //renderVector.insert(renderVector.end(), circleRenderVector.begin(), circleRenderVector.end());
+    //renderVector.insert(renderVector.end(), spriteRenderVector.begin(), spriteRenderVector.end());
 
-    for (auto e : renderVector)
-    {
-        if (!e->isZombie())
-        {
-            e->updateComponent(elapsed);
-        }
-    }
+    //for (auto e : renderVector)
+    //{
+    //    if (!e->isZombie())
+    //    {
+    //        e->updateComponent(elapsed);
+    //    }
+    //}
 
-    mWindow->draw(mHighScoreText);
-    mWindow->draw(mHighScoreNumberText);
-    mWindow->draw(mCurrentScoreText);
-    mWindow->draw(mCurrentScoreNumberText);
-    mWindow->draw(mRemainingLivesText);
-    mWindow->draw(mRemainingLivesNumberText);
+    //mWindow->draw(mHighScoreText);
+    //mWindow->draw(mHighScoreNumberText);
+    //mWindow->draw(mCurrentScoreText);
+    //mWindow->draw(mCurrentScoreNumberText);
+    //mWindow->draw(mRemainingLivesText);
+    //mWindow->draw(mRemainingLivesNumberText);
 
-    if (mGameStatus != GameStatus::GAME_NORMAL)
-    {
-        mWindow->draw(mGameOverText);
-        mWindow->draw(mGameOverInstructionsText);
-        mWindow->draw(mGameOverInstructions2Text);
-    }
+    //if (mGameStatus != GameStatus::GAME_NORMAL)
+    //{
+    //    mWindow->draw(mGameOverText);
+    //    mWindow->draw(mGameOverInstructionsText);
+    //    mWindow->draw(mGameOverInstructions2Text);
+    //}
 
-    mWindow->display();
+    //mWindow->display();
 }
 
 void GameState::buildLevel()
@@ -317,48 +314,48 @@ void GameState::buildLevel()
     sf::Vector2f brickSize(mTree.get<float>("BRICK_SIZE_X"), mTree.get<float>("BRICK_SIZE_Y"));
 
 
-    mPaddleID = mEntityMngr.createEntity();
+    //mPaddleID = mEntityMngr.createEntity();
 
-    addComponent<BoxColliderComponent>(CompType::BOX_COLLIDER, mPaddleID, paddleSize);
-    addComponent<RectRenderComponent>(CompType::RECT_RENDER, mPaddleID, paddleSize, sf::Color::Green);
-    mPaddleBehaviorComp = addComponent<PaddleBehaviorComponent>(CompType::PADDLE_BEHAVIOR, mPaddleID,
-        sf::Vector2f((float)mWalls.getSize().x * 0.5f - paddleSize.x * 0.5f, (float)(mWalls.getSize().y - paddleSize.y)));
+    //addComponent<BoxColliderComponent>(CompType::BOX_COLLIDER, mPaddleID, paddleSize);
+    //addComponent<RectRenderComponent>(CompType::RECT_RENDER, mPaddleID, paddleSize, sf::Color::Green);
+    //mPaddleBehaviorComp = addComponent<PaddleBehaviorComponent>(CompType::PADDLE_BEHAVIOR, mPaddleID,
+    //    sf::Vector2f((float)mWalls.getSize().x * 0.5f - paddleSize.x * 0.5f, (float)(mWalls.getSize().y - paddleSize.y)));
 
-    auto ballID = this->createEntity(EntityType::TAG_BALL);
+    //auto ballID = this->createEntity(EntityType::TAG_BALL);
 
-    float ballRadius = mTree.get<float>("BALL_RADIUS");
+    //float ballRadius = mTree.get<float>("BALL_RADIUS");
 
-    addComponent<CircleColliderComponent>(CompType::CIRCLE_COLLIDER, ballID, ballRadius);
-    addComponent<CircleRenderComponent>(CompType::CIRCLE_RENDER, ballID, ballRadius, sf::Color::Red);
-    mBallBehavior = addComponent<BallBehaviorComponent>(CompType::BALL_BEHAVIOR, ballID, mTree.get<float>("BALL_MAX_VELOCITY"), sf::Vector2f());
-    mBallBehavior->lockBall();
+    //addComponent<CircleColliderComponent>(CompType::CIRCLE_COLLIDER, ballID, ballRadius);
+    //addComponent<CircleRenderComponent>(CompType::CIRCLE_RENDER, ballID, ballRadius, sf::Color::Red);
+    //mBallBehavior = addComponent<BallBehaviorComponent>(CompType::BALL_BEHAVIOR, ballID, mTree.get<float>("BALL_MAX_VELOCITY"), sf::Vector2f());
+    //mBallBehavior->lockBall();
 
 
-    // create some bricks in a grid
-    sf::Vector2f offset(0, 0);
-    offset += sf::Vector2f(mWalls.getSize().x * 0.2f, mWalls.getSize().y * 0.2f);
-    for (size_t i = 0; i < 3; i++)
-    {
-        for (size_t j = 0; j < 4; j++)
-        {
-            auto brickID = this->createEntity(EntityType::TAG_BRICK);
+    //// create some bricks in a grid
+    //sf::Vector2f offset(0, 0);
+    //offset += sf::Vector2f(mWalls.getSize().x * 0.2f, mWalls.getSize().y * 0.2f);
+    //for (size_t i = 0; i < 3; i++)
+    //{
+    //    for (size_t j = 0; j < 4; j++)
+    //    {
+    //        auto brickID = this->createEntity(EntityType::TAG_BRICK);
 
-            //sf::Vector2f pos = offset + sf::Vector2f(brickSize.x * i + (i * 13), brickSize.y * j + (j * 13));
-            sf::Vector2f pos = offset + sf::Vector2f(brickSize.x * i, brickSize.y * j);
+    //        //sf::Vector2f pos = offset + sf::Vector2f(brickSize.x * i + (i * 13), brickSize.y * j + (j * 13));
+    //        sf::Vector2f pos = offset + sf::Vector2f(brickSize.x * i, brickSize.y * j);
 
-            BrickType type = BrickType::BRICK_NORMAL;
+    //        BrickType type = BrickType::BRICK_NORMAL;
 
-            if (j % 2 != 0) type = BrickType::BRICK_DOUBLE;
-            if (j == 0) type = BrickType::BRICK_2HIT;
+    //        if (j % 2 != 0) type = BrickType::BRICK_DOUBLE;
+    //        if (j == 0) type = BrickType::BRICK_2HIT;
 
-            addComponent<BoxColliderComponent>(CompType::BOX_COLLIDER, brickID, brickSize);
-            addComponent<RectRenderComponent>(CompType::RECT_RENDER, brickID, brickSize, sf::Color::Yellow, sf::Color::Black, 1.f);
-            addComponent<BrickBehaviorComponent>(CompType::BRICK, brickID, pos, type);
-        }
-    }
+    //        addComponent<BoxColliderComponent>(CompType::BOX_COLLIDER, brickID, brickSize);
+    //        addComponent<RectRenderComponent>(CompType::RECT_RENDER, brickID, brickSize, sf::Color::Yellow, sf::Color::Black, 1.f);
+    //        addComponent<BrickBehaviorComponent>(CompType::BRICK, brickID, pos, type);
+    //    }
+    //}
 
-    auto watcherID = createEntity(EntityType::TAG_GAME_OVER_WATCHER);
-    addComponent<GameOverWatcherComponent>(CompType::GAME_OVER_WATCHER, watcherID);
+    //auto watcherID = createEntity(EntityType::TAG_GAME_OVER_WATCHER);
+    //addComponent<GameOverWatcherComponent>(CompType::GAME_OVER_WATCHER, watcherID);
 }
 
 void GameState::exit()
@@ -403,17 +400,17 @@ void GameState::decrementPlayerLives()
     else
     {
         // spawn a new ball
-        auto ballID = this->createEntity(EntityType::TAG_BALL);
+        //auto ballID = this->createEntity(EntityType::TAG_BALL);
 
-        float ballRadius = mTree.get<float>("BALL_RADIUS");
+        //float ballRadius = mTree.get<float>("BALL_RADIUS");
 
-        addComponent<CircleColliderComponent>(CompType::CIRCLE_COLLIDER, ballID, ballRadius);
-        addComponent<CircleRenderComponent>(CompType::CIRCLE_RENDER, ballID, ballRadius, sf::Color::Red);
-        mBallBehavior = addComponent<BallBehaviorComponent>(CompType::BALL_BEHAVIOR, ballID, mTree.get<float>("BALL_MAX_VELOCITY"), sf::Vector2f());
-        mBallBehavior->changeState(BallState::BALL_FOLLOW_PADDLE);
+        //addComponent<CircleColliderComponent>(CompType::CIRCLE_COLLIDER, ballID, ballRadius);
+        //addComponent<CircleRenderComponent>(CompType::CIRCLE_RENDER, ballID, ballRadius, sf::Color::Red);
+        //mBallBehavior = addComponent<BallBehaviorComponent>(CompType::BALL_BEHAVIOR, ballID, mTree.get<float>("BALL_MAX_VELOCITY"), sf::Vector2f());
+        //mBallBehavior->changeState(BallState::BALL_FOLLOW_PADDLE);
 
-        mPaddleBehaviorComp->changeState(PaddleState::STATE_START);
-        mBallBehavior->lockBall();
+        //mPaddleBehaviorComp->changeState(PaddleState::STATE_START);
+        //mBallBehavior->lockBall();
     }
 }
 
@@ -442,14 +439,12 @@ void GameState::gameOver(bool win)
 
 void GameState::restartGame()
 {
-    cleanupZombies();
-
-    for (auto it = mEntityMap.begin(); it != mEntityMap.end();)
-    {
-        EntityID i = it->first;
-        ++it;
-        removeEntity(i);
-    }
+    //for (auto it = mEntityMap.begin(); it != mEntityMap.end();)
+    //{
+    //    EntityID i = it->first;
+    //    ++it;
+    //    removeEntity(i);
+    //}
 
     mGameStatus = GameStatus::GAME_NORMAL;
     mRemainingLives = mTree.get<int>("NUM_LIVES");

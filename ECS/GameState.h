@@ -4,7 +4,6 @@
 #include "BaseState.h"
 
 #include "BaseComponent.h"
-#include "CollisionDetector.h"
 
 #include "EntityManager.h"
 
@@ -109,8 +108,6 @@ private:
     sf::Texture mBackgroundTexture;
 
     sf::RectangleShape mWalls;
-
-    CollisionDetector mCollisionDetector;
 
     pt::ptree& mTree;
 };

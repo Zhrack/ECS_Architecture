@@ -26,7 +26,7 @@
       <UniqueIdentifier>{9ac94f12-0067-46db-b76d-3929b7cf02f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Box2D">
-      <UniqueIdentifier>{c188c16d-f8c0-4b3f-baa5-be0605e79ce7}</UniqueIdentifier>
+      <UniqueIdentifier>{4e2423bc-f718-4f31-8095-537e4217c352}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +70,6 @@
       <Filter>Processors</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureService.h">
@@ -291,9 +288,6 @@
       <Filter>Processors</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioService.cpp">
