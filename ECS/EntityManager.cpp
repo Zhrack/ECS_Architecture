@@ -17,14 +17,19 @@ EntityManager::EntityManager(unsigned long entityPool, sf::RenderWindow* win):
     {
         mComponents[i].resize(entityPool);
     }
-
-    // initialize processors
-    mProcessors.emplace_back(new RenderProcessor(this, mRenderWindow));
 }
 
 
 EntityManager::~EntityManager()
 {
+}
+
+bool EntityManager::initialize()
+{
+    // initialize processors
+    mProcessors.emplace_back(new RenderProcessor(this, mRenderWindow));
+
+    return true;
 }
 
 void EntityManager::update(float elapsed)
@@ -33,6 +38,11 @@ void EntityManager::update(float elapsed)
     {
         (*it)->updateProcessor(elapsed);
     }
+}
+
+bool EntityManager::terminate()
+{
+    return true;
 }
 
 std::vector<Dependency> EntityManager::intersection(const std::vector<CompType>& deps)
@@ -105,30 +115,6 @@ void EntityManager::removeEntity(EntityID id)
     e.removeEntityData.id = id;
 
     notifyProcessors(e);
-}
-
-BaseComponent* EntityManager::addComponent(CompType type, EntityID id, bool notify)
-{
-    if (mComponents[type][id] != nullptr)
-    {
-        std::cout << "Component already present!" << std::endl;
-        return mComponents[type][id].get();
-    }
-
-    mComponents[type][id].reset(getFromType(type));
-
-    if (!notify) return mComponents[type][id].get();
-
-    // notify processors of new component
-    Event e;
-    e.mID = EventID::EVENT_NEW_COMPONENT;
-    e.newCompData.id = id;
-    e.newCompData.type = type;
-    e.newCompData.comp = mComponents[type][id].get();
-
-    notifyProcessors(e);
-
-    return mComponents[type][id].get();
 }
 
 void EntityManager::removeComponent(CompType type, EntityID id)

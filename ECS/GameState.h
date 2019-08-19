@@ -6,6 +6,8 @@
 #include "BaseComponent.h"
 #include "CollisionDetector.h"
 
+#include "EntityManager.h"
+
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -61,21 +63,9 @@ public:
 
     void restartGame();
 
-    /// <summary>
-    /// Utility function for an often used component.
-    /// </summary>
-    /// <returns></returns>
-    PaddleBehaviorComponent* getPaddleComponent();
-
     const sf::RectangleShape& getWalls() const;
 
 private:
-
-    /// <summary>
-    /// What a cool name!
-    /// </summary>
-    void cleanupZombies();
-
     void updateGame(float elapsed);
 
     void renderGame(float elapsed);
@@ -93,6 +83,8 @@ private:
     float mPreviousTime;
     float mTimeLag;
     float mMSPerUpdate;
+
+    EntityManager   mEntityMngr;
 
     GameStatus mGameStatus;
 

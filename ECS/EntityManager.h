@@ -19,7 +19,11 @@ public:
     EntityManager(unsigned long entityPool, sf::RenderWindow* win);
     ~EntityManager();
 
+    bool initialize();
+
     void update(float elapsed);
+
+    bool terminate();
 
     std::vector<Dependency> intersection(const std::vector<CompType>& deps);
 
@@ -27,7 +31,8 @@ public:
 
     void removeEntity(EntityID id);
 
-    BaseComponent* addComponent(CompType type, EntityID id, bool notify = true);
+    template<class ...Args>
+    BaseComponent* addComponent(CompType type, EntityID id, bool notify = true, Args... args);
 
     void removeComponent(CompType type, EntityID id);
 
@@ -72,6 +77,31 @@ inline T * EntityManager::getComponent(CompType type, EntityID id)
 
 
     return static_cast<T*>(mComponents[type][id].get());
+}
+
+template<class ...Args>
+inline BaseComponent* EntityManager::addComponent(CompType type, EntityID id, bool notify, Args... args)
+{
+    if (mComponents[type][id] != nullptr)
+    {
+        std::cout << "Component already present!" << std::endl;
+        return mComponents[type][id].get();
+    }
+
+    mComponents[type][id].reset(getFromType(type, args...));
+
+    if (!notify) return mComponents[type][id].get();
+
+    // notify processors of new component
+    Event e;
+    e.mID = EventID::EVENT_NEW_COMPONENT;
+    e.newCompData.id = id;
+    e.newCompData.type = type;
+    e.newCompData.comp = mComponents[type][id].get();
+
+    notifyProcessors(e);
+
+    return mComponents[type][id].get();
 }
 
 template<class ...Args>

@@ -17,7 +17,8 @@ GameState::GameState(World* world, pt::ptree& tree) :
     mCurrentScore(0),
     mRemainingLives(),
     mTree(tree),
-    mGameStatus(GameStatus::GAME_NORMAL)
+    mGameStatus(GameStatus::GAME_NORMAL),
+    mEntityMngr(10, mWindow)
 {
 }
 
@@ -167,6 +168,11 @@ void GameState::enter()
         mPreviousTime = mClock.getElapsedTime().asSeconds();
         mTimeLag = 0.f;
         mMSPerUpdate = mTree.get<float>("MS_PER_UPDATE");
+
+        if (!mEntityMngr.initialize())
+        {
+            throw std::exception("Error initializing the Entity Manager");
+        }
     }
     catch (const std::exception& e)
     {
@@ -182,44 +188,15 @@ void GameState::update()
     mTimeLag += elapsed;
 
 
-    sf::Event event;
-    while (mWindow->pollEvent(event))
-    {
-        switch (event.type)
-        {
-        case sf::Event::Closed:
-            mWindow->close();
-            break;
-        case sf::Event::KeyPressed:
-            if (mGameStatus == GameStatus::GAME_NORMAL)
-            {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
-                {
-                    mPaddleBehaviorComp->onFireButtonPressed();
-                }
-            }
-            else
-            {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                {
-                    // go to MENU
-                    mWorld->changeState(new MenuState(mWorld, mTree));
-                    return;
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
-                {
-                    restartGame();
-                }
-            }
-        }
-    }
+
 
     // update loop
     if (mGameStatus == GameStatus::GAME_NORMAL)
     {
         while (mTimeLag >= mMSPerUpdate)
         {
-            updateGame(mMSPerUpdate);
+            //updateGame(mMSPerUpdate);
+            mEntityMngr.update(mMSPerUpdate);
             mTimeLag -= mMSPerUpdate;
         }
     }
@@ -340,7 +317,7 @@ void GameState::buildLevel()
     sf::Vector2f brickSize(mTree.get<float>("BRICK_SIZE_X"), mTree.get<float>("BRICK_SIZE_Y"));
 
 
-    mPaddleID = this->createEntity(EntityType::TAG_PLAYER);
+    mPaddleID = mEntityMngr.createEntity();
 
     addComponent<BoxColliderComponent>(CompType::BOX_COLLIDER, mPaddleID, paddleSize);
     addComponent<RectRenderComponent>(CompType::RECT_RENDER, mPaddleID, paddleSize, sf::Color::Green);
@@ -388,6 +365,11 @@ void GameState::exit()
 {
     std::cout << "GameState::exit" << std::endl;
 
+    if (!mEntityMngr.terminate())
+    {
+        throw std::exception("Error terminating the Entity Manager");
+    }
+
     if (mTree.get<int>("HIGH_SCORE") < mHighScore)
     {
         mTree.put<int>("HIGH_SCORE", mHighScore);
@@ -397,115 +379,6 @@ void GameState::exit()
     ServiceLocator::getAudioService()->stopMusic(MusicID::MUSIC_GAME);
     mWindow->clear();
 
-}
-
-EntityID GameState::createEntity(EntityType type)
-{
-    auto id = createID();
-    
-    // TransformComponent is always added
-    addComponent<TransformComponent>(CompType::TRANSFORM, id);
-
-    mEntityMap[id] = type;
-
-    return id;
-}
-
-void GameState::destroyEntity(EntityID entityID)
-{
-    // search if it has been already marked for removal
-    auto res = std::find_if(mZombieEntities.begin(), mZombieEntities.end(),
-        [entityID](EntityID e) {
-
-        return e == entityID;
-    });
-
-    if (res != mZombieEntities.end())
-    {
-        return;
-    }
-    // tag all its components as zombies
-    for (auto it = mCompMap.begin(); it != mCompMap.end(); ++it)
-    {
-        for (unsigned int i = 0; i < it->second.size(); i++)
-        {
-            if (it->second[i]->getEntityID() == entityID)
-            {
-                it->second[i]->setZombie();
-            }
-        }
-    }
-
-    mZombieEntities.push_back(entityID);
-}
-
-void GameState::removeComponent(CompType type, EntityID entityID)
-{
-    if (mCompMap.count(type) > 0)
-    {
-        auto& vec = mCompMap[type];
-
-        size_t i = 0;
-        for (; i < vec.size(); i++)
-        {
-            if (vec[i]->getEntityID() == entityID)
-            {
-                break;
-            }
-        }
-
-        if (i == vec.size()) return;
-
-
-        // swap with last element
-        std::iter_swap(vec.begin() + i, vec.end() - 1);
-        delete *(vec.end() - 1);
-        vec.pop_back();
-    }
-}
-
-void GameState::removeEntity(EntityID entityID)
-{
-    for (size_t i = 0; i < CompType::COUNT; i++)
-    {
-        removeComponent(CompType(i), entityID);
-    }
-
-    mEntityMap.erase(entityID);
-}
-
-void GameState::cleanupZombies()
-{
-    for (auto id : mZombieEntities)
-    {
-        removeEntity(id);
-    }
-
-    mZombieEntities.clear();
-}
-
-EntityType GameState::getEntityType(EntityID entityID)
-{
-    if (mEntityMap.count(entityID) > 0)
-    {
-        return mEntityMap[entityID];
-    }
-    return EntityType::TAG_NONE;
-}
-
-std::vector<EntityID> GameState::getAllEntitiesByType(EntityType type)
-{
-    std::vector<EntityID> result;
-
-    std::for_each(mEntityMap.begin(), mEntityMap.end(), [&](std::pair<EntityID, EntityType> pair)
-    {
-        if (pair.second == type)
-        {
-            result.push_back(pair.first);
-        }
-    });
-
-    return result;
 }
 
 void GameState::increaseScore(long points)
@@ -590,45 +463,6 @@ void GameState::restartGame()
 
 }
 
-PaddleBehaviorComponent * GameState::getPaddleComponent()
-{
-    return getComponent<PaddleBehaviorComponent>(CompType::PADDLE_BEHAVIOR, mPaddleID);
-}
-
-void GameState::sendMessage(EntityType type, CompType compType, Message & msg, SendType sendType, const sf::Time& timeToFire)
-{
-    // small optimization for often accessed component
-    if (type == TAG_PLAYER)
-    {
-        getPaddleComponent()->receive(msg, sendType, timeToFire);
-        return;
-    }
-
-    for (auto e : mEntityMap)
-    {
-        if (e.second == type)
-        {
-            getComponent<BaseComponent>(compType, e.first)->receive(msg, sendType, timeToFire);
-        }
-    }
-}
-
-void GameState::sendMessage(CompType compType, EntityID entityID, Message & msg, SendType sendType, const sf::Time& timeToFire)
-{
-    getComponent<BaseComponent>(compType, entityID)->receive(msg, sendType, timeToFire);
-}
-
-PowerUpService & GameState::getPUService()
-{
-    return mPUService;
-}
-
-std::vector<BaseComponent*>& GameState::getComponentList(CompType type)
-{
-    // no check needed, all CompTypes auto register
-    return mCompMap[type];
-}
-
 pt::ptree & GameState::config()
 {
     return mTree;
@@ -637,9 +471,4 @@ pt::ptree & GameState::config()
 const sf::RectangleShape& GameState::getWalls() const
 {
     return mWalls;
-}
-
-EntityID GameState::createID() const
-{
-    return this->nextID++;
 }

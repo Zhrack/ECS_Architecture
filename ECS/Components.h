@@ -71,7 +71,7 @@ private:
 };
 
 /// <summary>
-/// An empty component that tags entities under player control.
+/// A component that tags entities under player control.
 /// </summary>
 struct PlayerInputComponent : public BaseComponent
 {

@@ -23,8 +23,33 @@ void PlayerInputProcessor::update(float elapsed)
     sf::Event event;
     while (mWindow->pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        switch (event.type)
+        {
+        case sf::Event::Closed:
             mWindow->close();
+            break;
+        //case sf::Event::KeyPressed:
+        //    if (mGameStatus == GameStatus::GAME_NORMAL)
+        //    {
+        //        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+        //        {
+        //            mPaddleBehaviorComp->onFireButtonPressed();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        //        {
+        //            // go to MENU
+        //            mWorld->changeState(new MenuState(mWorld, mTree));
+        //            return;
+        //        }
+        //        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+        //        {
+        //            restartGame();
+        //        }
+        //    }
+        }
     }
 
     for (auto& e : mCurrentDeps)
