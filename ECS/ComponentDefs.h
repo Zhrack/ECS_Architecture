@@ -15,8 +15,7 @@ using ComponentList = std::vector<BaseComponentPtr>;
 
 enum CompType
 {
-    COMP_TRANSFORM = 0,
-    COMP_VELOCITY,
+    COMP_PHYSICS = 0,
     COMP_RENDER,
     COMP_PLAYER_INPUT,
 

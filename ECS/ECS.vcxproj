@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Programmazione\Libraries\Box2D\lib;D:\Programmazione\Libraries\boost_1_70_0\lib64-msvc-14.1;D:\Programmazione\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Programmazione\Libraries\boost_1_70_0\lib64-msvc-14.1;D:\Programmazione\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -219,7 +219,6 @@
     <ClInclude Include="Events.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
-    <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="NullAudio.h" />
     <ClInclude Include="NullTextureService.h" />
     <ClInclude Include="Observable.h" />
@@ -291,7 +290,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="NullTextureService.cpp" />
     <ClCompile Include="Observable.cpp" />

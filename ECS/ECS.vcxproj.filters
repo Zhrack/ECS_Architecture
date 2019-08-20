@@ -111,9 +111,6 @@
     <ClInclude Include="States.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="MovementProcessor.h">
-      <Filter>Processors</Filter>
-    </ClInclude>
     <ClInclude Include="Box2D\Box2D.h">
       <Filter>Box2D</Filter>
     </ClInclude>
@@ -319,9 +316,6 @@
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementProcessor.cpp">
-      <Filter>Processors</Filter>
     </ClCompile>
     <ClCompile Include="Box2D\Collision\b2BroadPhase.cpp">
       <Filter>Box2D</Filter>

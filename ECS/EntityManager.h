@@ -111,13 +111,9 @@ inline BaseComponent * EntityManager::getFromType(CompType type, Args... args)
 {
     BaseComponent* comp = nullptr;
 
-    switch (type)
-    {
-    case COMP_TRANSFORM:
-        comp = new TransformComponent(args...);
-        break;
-    case COMP_VELOCITY:
-        comp = new VelocityComponent(args...);
+    switch (type) {
+    case COMP_PHYSICS:
+        comp = new PhysicsComponent(args...);
         break;
     case COMP_RENDER:
         comp = new RenderComponent(args...);

@@ -3,71 +3,21 @@
 
 #define LOCK std::lock_guard<std::mutex> lock(mMutex)
 
-void TransformComponent::setPosition(const sf::Vector2f& pos)
+PhysicsComponent::PhysicsComponent(b2World* world, b2BodyType type, const b2Vec2& position, float rotation) :
+    mBody(nullptr),
+    bWorld(world)
 {
-    LOCK;
-    mTransform.setPosition(pos);
+    b2BodyDef bodyDef;
+    bodyDef.type = type;
+    bodyDef.position = position;
+    bodyDef.angle = rotation;
+
+    bWorld->CreateBody(&bodyDef);
 }
 
-void TransformComponent::setRotation(float angle)
+PhysicsComponent::~PhysicsComponent()
 {
-    LOCK;
-    mTransform.setRotation(angle);
-}
-
-void TransformComponent::setScale(const sf::Vector2f& factors)
-{
-    LOCK;
-    mTransform.setScale(factors);
-}
-
-sf::Vector2f TransformComponent::getPosition()
-{
-    LOCK;
-    return mTransform.getPosition();
-}
-
-float TransformComponent::getRotation()
-{
-    LOCK;
-    return mTransform.getRotation();
-}
-
-sf::Vector2f TransformComponent::getScale()
-{
-    LOCK;
-    return mTransform.getScale();
-}
-
-void TransformComponent::move(const sf::Vector2f & offset)
-{
-    LOCK;
-    mTransform.move(offset);
-}
-
-void TransformComponent::rotate(float angle)
-{
-    LOCK;
-    mTransform.rotate(angle);
-}
-
-void TransformComponent::scale(const sf::Vector2f & factor)
-{
-    LOCK;
-    mTransform.scale(factor);
-}
-
-
-void VelocityComponent::setVelocity(const sf::Vector2f& vel)
-{
-    LOCK;
-    mVel = vel;
-}
-
-sf::Vector2f VelocityComponent::getVelocity()
-{
-    LOCK;
-    return mVel;
+    bWorld->DestroyBody(mBody);
 }
 
 void RenderComponent::setPosition(const sf::Vector2f & pos)
@@ -110,3 +60,5 @@ void RenderComponent::draw(sf::RenderTarget & target, sf::RenderStates states) c
 {
     target.draw(mSprite, states);
 }
+
+

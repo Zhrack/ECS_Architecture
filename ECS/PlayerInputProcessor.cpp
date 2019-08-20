@@ -6,7 +6,7 @@
 PlayerInputProcessor::PlayerInputProcessor(EntityManager* manager, sf::RenderWindow* win) :
     BaseProcessor(manager, {
         COMP_PLAYER_INPUT,
-        COMP_VELOCITY
+        COMP_PHYSICS
         }),
     mWindow(win)
 {

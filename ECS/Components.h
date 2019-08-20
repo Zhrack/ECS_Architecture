@@ -4,47 +4,23 @@
 #include "BaseComponent.h"
 
 #include <SFML/Graphics.hpp>
+#include "Box2D/Box2D.h"
 
 /// <summary>
-/// Encapsulates a sf::Transform, a position, rotation and scale matrix.
+/// A wrapper for a Box2D body.
 /// </summary>
-struct TransformComponent : public BaseComponent
+struct PhysicsComponent : public BaseComponent
 {
-    TransformComponent() {}
-    virtual ~TransformComponent() {}
+    PhysicsComponent() {};
+    PhysicsComponent(b2World* bWorld, b2BodyType type, const b2Vec2& position, float rotation);
 
-    void setPosition(const sf::Vector2f& pos);
-    void setRotation(float angle);
-    void setScale(const sf::Vector2f& factors);
+    virtual ~PhysicsComponent();
 
-    sf::Vector2f    getPosition();
-    float           getRotation();
-    sf::Vector2f    getScale();
-
-    void move(const sf::Vector2f& offset);
-    void rotate(float angle);
-    void scale(const sf::Vector2f& factor);
+    b2Body* getBody() const { return mBody; };
 
 private:
-    sf::Transformable   mTransform;
-};
-
-/// <summary>
-/// The velocity vector.
-/// </summary>
-struct VelocityComponent : public BaseComponent
-{
-    VelocityComponent() {}
-    VelocityComponent(sf::Vector2f vec) : mVel(vec) {}
-
-    virtual ~VelocityComponent() {}
-
-    void setVelocity(const sf::Vector2f& vel);
-
-    sf::Vector2f getVelocity();
-
-private:
-    sf::Vector2f    mVel;
+    b2Body* mBody;
+    b2World* bWorld;
 };
 
 /// <summary>

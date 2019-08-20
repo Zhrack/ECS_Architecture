@@ -9,7 +9,7 @@
 
 RenderProcessor::RenderProcessor(EntityManager* manager, sf::RenderWindow* win) :
     BaseProcessor(manager, {
-        CompType::COMP_TRANSFORM,
+        CompType::COMP_PHYSICS,
         CompType::COMP_RENDER
         }),
     mWindow(win)
@@ -27,13 +27,15 @@ void RenderProcessor::update(float elapsed)
 
     for (auto& e : mCurrentDeps)
     {
-        auto transform = e.getAs<TransformComponent>(CompType::COMP_TRANSFORM);
+        auto physics = e.getAs<PhysicsComponent>(CompType::COMP_PHYSICS);
         auto render = e.getAs<RenderComponent>(CompType::COMP_RENDER);
+        b2Body* body = physics->getBody();
 
+        b2Vec2 pos = body->GetPosition();
+        float rotation = body->GetAngle();
         // update sprite transform
-        render->setPosition(transform->getPosition());
-        render->setRotation(transform->getRotation());
-        render->setScale(transform->getScale());
+        render->setPosition(sf::Vector2f(pos.x, pos.y));
+        render->setRotation(rotation);
 
         // render it
         mWindow->draw(*render);
@@ -42,10 +44,10 @@ void RenderProcessor::update(float elapsed)
     mWindow->display();
 }
 
-void RenderProcessor::onNotify(const Event & event)
+void RenderProcessor::onNotify(const Event & ev)
 {
     // first check standard events
-    BaseProcessor::onNotify(event);
+    BaseProcessor::onNotify(ev);
 
     // not check the rest
 
