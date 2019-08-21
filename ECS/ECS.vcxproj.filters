@@ -252,6 +252,9 @@
     <ClInclude Include="Box2D\Rope\b2Rope.h">
       <Filter>Box2D</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsProcessor.h">
+      <Filter>Processors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -454,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="Box2D\Rope\b2Rope.cpp">
       <Filter>Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsProcessor.cpp">
+      <Filter>Processors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,20 +4,20 @@
 #define LOCK std::lock_guard<std::mutex> lock(mMutex)
 
 PhysicsComponent::PhysicsComponent(b2World* world, b2BodyType type, const b2Vec2& position, float rotation) :
-    mBody(nullptr),
-    bWorld(world)
+    mBody(nullptr)
 {
     b2BodyDef bodyDef;
     bodyDef.type = type;
     bodyDef.position = position;
     bodyDef.angle = rotation;
+    bodyDef.userData = this;
 
-    bWorld->CreateBody(&bodyDef);
+    world->CreateBody(&bodyDef);
 }
 
 PhysicsComponent::~PhysicsComponent()
 {
-    bWorld->DestroyBody(mBody);
+    mBody->GetWorld()->DestroyBody(mBody);
 }
 
 void RenderComponent::setPosition(const sf::Vector2f & pos)

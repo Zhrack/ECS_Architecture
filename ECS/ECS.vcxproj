@@ -226,6 +226,7 @@
     <ClInclude Include="PCAudioService.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PCTextureService.h" />
+    <ClInclude Include="PhysicsProcessor.h" />
     <ClInclude Include="PlayerInputProcessor.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="ServiceLocator.h" />
@@ -302,6 +303,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PCTextureService.cpp" />
+    <ClCompile Include="PhysicsProcessor.cpp" />
     <ClCompile Include="PlayerInputProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />

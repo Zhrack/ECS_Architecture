@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+#include "PhysicsProcessor.h"
 #include "RenderProcessor.h"
 
 
@@ -27,6 +28,7 @@ EntityManager::~EntityManager()
 bool EntityManager::initialize()
 {
     // initialize processors
+    mProcessors.emplace_back(new PhysicsProcessor(this));
     mProcessors.emplace_back(new RenderProcessor(this, mRenderWindow));
 
     return true;

@@ -54,20 +54,22 @@ void PlayerInputProcessor::update(float elapsed)
 
     for (auto& e : mCurrentDeps)
     {
-        auto velocity = e.getAs<VelocityComponent>(CompType::COMP_VELOCITY);
+        auto physics = e.getAs<PhysicsComponent>(CompType::COMP_PHYSICS);
+
+        // TODO apply impulse or force instead of change in velocity
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            velocity->setVelocity(sf::Vector2f(-10.f, 0.f));
+            physics->getBody()->ApplyForceToCenter(b2Vec2(-10.f, 0.f), true);// velocity->setVelocity(sf::Vector2f(-10.f, 0.f));
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            velocity->setVelocity(sf::Vector2f(10.f, 0.f));
+            physics->getBody()->ApplyForceToCenter(b2Vec2(10.f, 0.f), true);//velocity->setVelocity(sf::Vector2f(10.f, 0.f));
         }
-        else
-        {
-            velocity->setVelocity(sf::Vector2f());
-        }
+        //else
+        //{
+        //    velocity->setVelocity(sf::Vector2f());
+        //}
 
     }
 }
