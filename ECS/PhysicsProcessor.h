@@ -33,13 +33,14 @@ class MyContactListener : public b2ContactListener
 {
     void BeginContact(b2Contact* contact) {
 
-        void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<PhysicsComponent*>(bodyUserData)->beginCallbacks();
+        auto bodyUserDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
+        auto bodyUserDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
 
-        bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<PhysicsComponent*>(bodyUserData)->beginCallbacks();
+        if (bodyUserDataA)
+            bodyUserDataA->beginCallbacks(bodyUserDataB);
+
+        if (bodyUserDataB)
+            bodyUserDataB->beginCallbacks(bodyUserDataA);
 
     }
 

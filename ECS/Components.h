@@ -14,6 +14,9 @@
 /// </summary>
 struct PhysicsComponent : public BaseComponent
 {
+    using beginContactCallbackType = std::function<void()>;
+    using endContactCallbackType = std::function<void()>;
+
     PhysicsComponent() {};
     PhysicsComponent(b2World* bWorld, b2BodyType type, const b2Vec2& position, float rotation);
 
@@ -21,20 +24,20 @@ struct PhysicsComponent : public BaseComponent
 
     b2Body* getBody() const { return mBody; };
 
-    void addBeginContactListener(std::function<void()> func);
-    void remoBeginveContactListener(std::function<void()> func);
+    void addBeginContactListener(beginContactCallbackType func);
+    void remoBeginveContactListener(beginContactCallbackType func);
 
-    void addEndContactListener(std::function<void()> func);
-    void removeEndContactListener(std::function<void()> func);
+    void addEndContactListener(endContactCallbackType func);
+    void removeEndContactListener(endContactCallbackType func);
 
     /// <summary>
     /// Call all begin callbacks after a begin contact event.
     /// </summary>
-    void beginCallbacks();
+    void beginCallbacks(PhysicsComponent* other);
     /// <summary>
     /// Call all end callbacks after a end contact event.
     /// </summary>
-    void endCallbacks();
+    void endCallbacks(PhysicsComponent* other);
 
 private:
     b2Body* mBody;
@@ -42,10 +45,11 @@ private:
     /// <summary>
     /// It stores the callbacks for every other processor who needs collision logic
     /// TODO choose arguments
+    /// Probably needs a unordered_map to use processor names or IDs as keys.
     /// </summary>
-    std::vector<std::function<void()>>   mBeginContactCallbacks;
+    std::vector<beginContactCallbackType>   mBeginContactCallbacks;
 
-    std::vector<std::function<void()>>   mEndContactCallbacks;
+    std::vector<endContactCallbackType>   mEndContactCallbacks;
 };
 
 /// <summary>

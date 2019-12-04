@@ -12,7 +12,7 @@ PhysicsComponent::PhysicsComponent(b2World* world, b2BodyType type, const b2Vec2
     bodyDef.angle = rotation;
     bodyDef.userData = this;
 
-    world->CreateBody(&bodyDef);
+    mBody = world->CreateBody(&bodyDef);
 }
 
 PhysicsComponent::~PhysicsComponent()
