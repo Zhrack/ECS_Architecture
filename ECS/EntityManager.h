@@ -54,7 +54,7 @@ private:
     EntityID createEntity();
 
     template<class ...Args>
-    BaseComponent* getFromType(CompType type, Args... args);
+    BaseComponent* getFromType(EntityID id, CompType type, Args... args);
 
 private:
     std::vector<ComponentList>      mComponents;
@@ -90,7 +90,7 @@ inline BaseComponent* EntityManager::addComponent(CompType type, EntityID id, bo
         return mComponents[type][id].get();
     }
 
-    mComponents[type][id].reset(getFromType(type, args...));
+    mComponents[type][id].reset(getFromType(id, type, args...));
 
     if (!notify) return mComponents[type][id].get();
 
@@ -107,19 +107,19 @@ inline BaseComponent* EntityManager::addComponent(CompType type, EntityID id, bo
 }
 
 template<class ...Args>
-inline BaseComponent * EntityManager::getFromType(CompType type, Args... args)
+inline BaseComponent * EntityManager::getFromType(EntityID id, CompType type, Args... args)
 {
     BaseComponent* comp = nullptr;
 
     switch (type) {
     case COMP_PHYSICS:
-        comp = new PhysicsComponent(args...);
+        comp = new PhysicsComponent(id, args...);
         break;
     case COMP_RENDER:
-        comp = new RenderComponent(args...);
+        comp = new RenderComponent(id, args...);
         break;
     case COMP_PLAYER_INPUT:
-        comp = new PlayerInputComponent(args...);
+        comp = new PlayerInputComponent(id, args...);
         break;
     case COMP_COUNT:
     default:

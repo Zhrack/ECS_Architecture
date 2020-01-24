@@ -14,18 +14,18 @@
 /// </summary>
 struct PhysicsComponent : public BaseComponent
 {
-    using beginContactCallbackType = std::function<void()>;
-    using endContactCallbackType = std::function<void()>;
+    using beginContactCallbackType = std::function<void(PhysicsComponent*)>;
+    using endContactCallbackType = std::function<void(PhysicsComponent*)>;
 
-    PhysicsComponent() {};
-    PhysicsComponent(b2World* bWorld, b2BodyType type, const b2Vec2& position, float rotation);
+    PhysicsComponent(EntityID id) : BaseComponent(id) {}
+    PhysicsComponent(EntityID id, b2World* bWorld, b2BodyType type, const b2Vec2& position, float rotation);
 
     virtual ~PhysicsComponent();
 
     b2Body* getBody() const { return mBody; };
 
     void addBeginContactListener(beginContactCallbackType func);
-    void remoBeginveContactListener(beginContactCallbackType func);
+    void removeBeginContactListener(beginContactCallbackType func);
 
     void addEndContactListener(endContactCallbackType func);
     void removeEndContactListener(endContactCallbackType func);
@@ -57,7 +57,7 @@ private:
 /// </summary>
 struct RenderComponent : public BaseComponent, sf::Drawable
 {
-    RenderComponent() {}
+    RenderComponent(EntityID id);
     virtual ~RenderComponent() {}
 
     // TODO expose sf::Sprite methods as needed
@@ -80,7 +80,7 @@ private:
 /// </summary>
 struct PlayerInputComponent : public BaseComponent
 {
-    PlayerInputComponent() {}
+    PlayerInputComponent(EntityID id);
     virtual ~PlayerInputComponent() {}
 };
 

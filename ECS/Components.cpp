@@ -3,7 +3,8 @@
 
 #define LOCK std::lock_guard<std::mutex> lock(mMutex)
 
-PhysicsComponent::PhysicsComponent(b2World* world, b2BodyType type, const b2Vec2& position, float rotation) :
+PhysicsComponent::PhysicsComponent(EntityID id, b2World* world, b2BodyType type, const b2Vec2& position, float rotation) :
+    BaseComponent(id),
     mBody(nullptr)
 {
     b2BodyDef bodyDef;
@@ -18,6 +19,27 @@ PhysicsComponent::PhysicsComponent(b2World* world, b2BodyType type, const b2Vec2
 PhysicsComponent::~PhysicsComponent()
 {
     mBody->GetWorld()->DestroyBody(mBody);
+}
+
+void PhysicsComponent::beginCallbacks(PhysicsComponent * other)
+{
+    for (auto cb : mBeginContactCallbacks) 
+    {
+        cb(other);
+    }
+}
+
+void PhysicsComponent::endCallbacks(PhysicsComponent * other)
+{
+    for (auto cb : mEndContactCallbacks)
+    {
+        cb(other);
+    }
+}
+
+RenderComponent::RenderComponent(EntityID id) :
+    BaseComponent(id)
+{
 }
 
 void RenderComponent::setPosition(const sf::Vector2f & pos)
@@ -61,4 +83,7 @@ void RenderComponent::draw(sf::RenderTarget & target, sf::RenderStates states) c
     target.draw(mSprite, states);
 }
 
-
+PlayerInputComponent::PlayerInputComponent(EntityID id) :
+    BaseComponent(id)
+{
+}

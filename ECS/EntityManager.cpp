@@ -111,7 +111,6 @@ void EntityManager::removeEntity(EntityID id)
 {
     mEntityIDPool.freeID(id);
 
-    // TODO notify processors
     Event e;
     e.mID = EventID::EVENT_REMOVE_ENTITY;
     e.removeEntityData.id = id;

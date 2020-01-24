@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Programmazione\Libraries\boost_1_70_0\lib64-msvc-14.1;D:\Programmazione\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -214,6 +214,7 @@
     <ClInclude Include="ComponentDefs.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="Dependency.h" />
+    <ClInclude Include="EntityDefs.h" />
     <ClInclude Include="EntityIDPool.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Events.h" />

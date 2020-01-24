@@ -31,30 +31,9 @@ private:
 
 class MyContactListener : public b2ContactListener
 {
-    void BeginContact(b2Contact* contact) {
+    void BeginContact(b2Contact* contact);
 
-        auto bodyUserDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
-        auto bodyUserDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
-
-        if (bodyUserDataA)
-            bodyUserDataA->beginCallbacks(bodyUserDataB);
-
-        if (bodyUserDataB)
-            bodyUserDataB->beginCallbacks(bodyUserDataA);
-
-    }
-
-    void EndContact(b2Contact* contact) {
-
-        void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<PhysicsComponent*>(bodyUserData)->endCallbacks();
-
-        bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<PhysicsComponent*>(bodyUserData)->endCallbacks();
-
-    }
+    void EndContact(b2Contact* contact);
 };
 
 

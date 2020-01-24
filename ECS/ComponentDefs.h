@@ -6,9 +6,6 @@
 
 #include "BaseComponent.h"
 
-using EntityID = std::uint64_t;
-
-
 using BaseComponentPtr = std::unique_ptr<BaseComponent>;
 
 using ComponentList = std::vector<BaseComponentPtr>;

@@ -2,11 +2,17 @@
 #define BASE_COMPONENT_H_
 
 #include <mutex>
+
+#include "EntityDefs.h"
 #include "Observable.h"
 
 struct BaseComponent : public Observable
 {
-    BaseComponent() {}
+    BaseComponent() = delete;
+
+    BaseComponent(EntityID id) :
+        mEntityID(id) {}
+
     virtual ~BaseComponent() {}
 
 protected:
@@ -14,6 +20,9 @@ protected:
     /// Used to regulate access to this component.
     /// </summary>
     std::mutex  mMutex;
+
+    // ID of this component
+    EntityID    mEntityID;
 };
 
 #endif // !BASE_COMPONENT_H_

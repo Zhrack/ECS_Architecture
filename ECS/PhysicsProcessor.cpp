@@ -34,3 +34,29 @@ void PhysicsProcessor::onNotify(const Event & ev)
     // not check the rest
 
 }
+
+void MyContactListener::BeginContact(b2Contact* contact) {
+
+    auto bodyUserDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
+    auto bodyUserDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
+
+    if (bodyUserDataA)
+        bodyUserDataA->beginCallbacks(bodyUserDataB);
+
+    if (bodyUserDataB)
+        bodyUserDataB->beginCallbacks(bodyUserDataA);
+
+}
+
+void MyContactListener::EndContact(b2Contact* contact) {
+
+    auto bodyUserDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
+    auto bodyUserDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
+
+    if (bodyUserDataA)
+        bodyUserDataA->endCallbacks(bodyUserDataB);
+
+    if (bodyUserDataB)
+        bodyUserDataB->endCallbacks(bodyUserDataA);
+
+}
