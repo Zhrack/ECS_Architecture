@@ -15,6 +15,8 @@ struct BaseComponent : public Observable
 
     virtual ~BaseComponent() {}
 
+    EntityID getEntityID() const { return mEntityID; }
+
 protected:
     /// <summary>
     /// Used to regulate access to this component.
