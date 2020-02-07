@@ -21,19 +21,28 @@ PhysicsComponent::~PhysicsComponent()
     mBody->GetWorld()->DestroyBody(mBody);
 }
 
-void PhysicsComponent::beginCallbacks(PhysicsComponent * other)
+void PhysicsComponent::addBeginContactListener(beginContactCallbackType func)
+{
+    mBeginContactCallbacks.push_back(func);
+}
+
+void PhysicsComponent::removeBeginContactListener(beginContactCallbackType func)
+{
+}
+
+void PhysicsComponent::beginCallbacks(b2Contact* contact, PhysicsComponent* other)
 {
     for (auto cb : mBeginContactCallbacks) 
     {
-        cb(other);
+        cb(contact, other);
     }
 }
 
-void PhysicsComponent::endCallbacks(PhysicsComponent * other)
+void PhysicsComponent::endCallbacks(b2Contact* contact, PhysicsComponent* other)
 {
     for (auto cb : mEndContactCallbacks)
     {
-        cb(other);
+        cb(contact, other);
     }
 }
 

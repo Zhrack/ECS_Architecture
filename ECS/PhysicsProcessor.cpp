@@ -54,9 +54,9 @@ void MyContactListener::EndContact(b2Contact* contact) {
     auto bodyUserDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
 
     if (bodyUserDataA)
-        bodyUserDataA->endCallbacks(bodyUserDataB);
+        bodyUserDataA->endCallbacks(contact, bodyUserDataB);
 
     if (bodyUserDataB)
-        bodyUserDataB->endCallbacks(bodyUserDataA);
+        bodyUserDataB->endCallbacks(contact, bodyUserDataA);
 
 }

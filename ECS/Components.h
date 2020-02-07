@@ -14,8 +14,8 @@
 /// </summary>
 struct PhysicsComponent : public BaseComponent
 {
-    using beginContactCallbackType = std::function<void(PhysicsComponent*)>;
-    using endContactCallbackType = std::function<void(PhysicsComponent*)>;
+    using beginContactCallbackType = std::function<void(b2Contact*, PhysicsComponent*)>;
+    using endContactCallbackType = std::function<void(b2Contact*, PhysicsComponent*)>;
 
     PhysicsComponent(EntityID id) : BaseComponent(id) {}
     PhysicsComponent(EntityID id, b2World* bWorld, b2BodyType type, const b2Vec2& position, float rotation);
@@ -33,11 +33,11 @@ struct PhysicsComponent : public BaseComponent
     /// <summary>
     /// Call all begin callbacks after a begin contact event.
     /// </summary>
-    void beginCallbacks(PhysicsComponent* other);
+    void beginCallbacks(b2Contact* contact, PhysicsComponent* other);
     /// <summary>
     /// Call all end callbacks after a end contact event.
     /// </summary>
-    void endCallbacks(PhysicsComponent* other);
+    void endCallbacks(b2Contact* contact, PhysicsComponent* other);
 
 private:
     b2Body* mBody;
